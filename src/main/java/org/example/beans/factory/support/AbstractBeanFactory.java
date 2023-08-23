@@ -12,9 +12,6 @@ public abstract class AbstractBeanFactory
         /* get和add单例对象的功能 */ extends DefaultSingletonBeanRegistry
         /* get bean的功能 */ implements BeanFactory {
 
-    /**
-     * 经典的模板方法模式
-     */
     @Override
     public Object getBean(String beanName) throws BeansException {
         return doGetBean(beanName, null);
@@ -25,6 +22,9 @@ public abstract class AbstractBeanFactory
         return doGetBean(beanName, ctorArgs);
     }
 
+    /**
+     * 经典的模板方法模式
+     */
     @SuppressWarnings({"unchecked cast"})
     private <T> T doGetBean(String beanName, @Nullable Object[] ctorArgs) {
         Object bean = super.getSingleton(beanName);

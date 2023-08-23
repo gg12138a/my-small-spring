@@ -1,10 +1,16 @@
 package org.example.beans.factory.support;
 
+import cn.hutool.core.bean.BeanUtil;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.beans.BeansException;
+import org.example.beans.PropertyValue;
+import org.example.beans.PropertyValues;
 import org.example.beans.factory.BeanDefinition;
+import org.example.beans.factory.BeanReference;
 import org.example.beans.factory.InstantiationStrategy;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
@@ -21,11 +27,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
     private InstantiationStrategy instantiationStrategy = new CglibSubClassingInstantiationStrategy();
 
     @Override
-    protected Object createBean(String beanName, BeanDefinition beanDefinition, Object[] ctorArgs) throws BeansException {
+    protected Object createBean(String beanName, BeanDefinition beanDefinition, @Nullable Object[] ctorArgs) throws BeansException {
         Object bean;
 
         try {
             bean = this.createBeanInstance(beanDefinition, beanName, ctorArgs);
+            applyPropertyValues(beanName, bean, beanDefinition);
         } catch (Exception e) {
             throw new BeansException("Instantiation of bean failed", e);
         }
@@ -35,7 +42,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         return bean;
     }
 
-    protected Object createBeanInstance(BeanDefinition beanDefinition, String beanName, Object[] ctorArgs) {
+    protected Object createBeanInstance(BeanDefinition beanDefinition, @Ignore String beanName, @Nullable Object[] ctorArgs) {
         Class<?> beanClass = beanDefinition.getBeanClass();
         Constructor<?>[] declaredConstructors = beanClass.getDeclaredConstructors();
 
@@ -52,6 +59,31 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
         }
 
         return this.instantiationStrategy.instantiate(beanDefinition, beanName, ctorToUse, ctorArgs);
+    }
+
+    /**
+     * 进行属性填充
+     * <p>
+     * TODO: 解决循环依赖问题
+     */
+    protected void applyPropertyValues(String beanName, Object bean, BeanDefinition beanDefinition) {
+        try {
+            PropertyValues propertyValues = beanDefinition.getPropertyValues();
+            for (PropertyValue pv : propertyValues.toArray()) {
+                String propName = pv.getName();
+                Object val = pv.getVal();
+
+                if (val instanceof BeanReference) {
+                    // A 依赖 B，获取 B 的实例化
+                    BeanReference beanReference = (BeanReference) val;
+                    val = super.getBean(beanReference.getBeanName());
+                }
+
+                BeanUtil.setFieldValue(bean, propName, val);
+            }
+        } catch (Exception e) {
+            throw new BeansException("Error setting property values：" + beanName);
+        }
     }
 
 }
