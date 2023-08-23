@@ -5,6 +5,9 @@ import org.example.beans.factory.SingletonBeanRegistry;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 核心功能： 管理单例bean对象
+ */
 public class DefaultSingletonBeanRegistry implements SingletonBeanRegistry {
 
     private final Map<String, Object> singletonObjects = new HashMap<>();

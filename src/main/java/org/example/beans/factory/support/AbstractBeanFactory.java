@@ -4,6 +4,9 @@ import org.example.beans.BeansException;
 import org.example.beans.factory.BeanFactory;
 import org.example.beans.factory.BeanDefinition;
 
+/**
+ * 核心功能： 获取bean对象
+ */
 public abstract class AbstractBeanFactory
         /* get和add单例对象的功能 */ extends DefaultSingletonBeanRegistry
         /* get bean的功能 */ implements BeanFactory {

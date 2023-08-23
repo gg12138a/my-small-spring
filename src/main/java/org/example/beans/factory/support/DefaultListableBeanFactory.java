@@ -7,6 +7,9 @@ import org.example.beans.factory.BeanDefinitionRegistry;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 核心功能： 管理（get, add）BeanDef
+ */
 public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFactory implements BeanDefinitionRegistry {
 
     private final Map<String, BeanDefinition> beanDefinitionMap = new HashMap<>();

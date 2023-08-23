@@ -1,5 +1,9 @@
 # IOC
 
+## Tip
+
+- 所有的BeanFactory实现，都继承自超类`DefaultSingletonBeanRegistry`
+
 ## 基本的工作流程
 
 1. 定义BeanDefinition
