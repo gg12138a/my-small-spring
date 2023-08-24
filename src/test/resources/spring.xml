@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+
+    <bean id="orderDao" class="org.example.test.bean.OrderDao"/>
+
+    <bean id="orderService" class="org.example.test.bean.OrderService">
+        <property name="plainVal" value="5321"/>
+        <property name="orderDao" ref="orderDao"/>
+    </bean>
+
+</beans>

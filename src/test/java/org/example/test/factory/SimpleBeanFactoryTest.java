@@ -1,8 +1,8 @@
-package org.example;
+package org.example.test.factory;
 
-import org.example.bean.OrderDao;
-import org.example.bean.OrderService;
-import org.example.bean.UserService;
+import org.example.test.bean.OrderDao;
+import org.example.test.bean.OrderService;
+import org.example.test.bean.UserService;
 import org.example.beans.PropertyValue;
 import org.example.beans.PropertyValues;
 import org.example.beans.factory.BeanDefinition;
@@ -12,7 +12,7 @@ import org.example.beans.factory.support.SimpleJDKInstantiationStrategy;
 import org.junit.Test;
 
 
-public class ApiTest {
+public class SimpleBeanFactoryTest {
 
     /**
      * 基本的使用流程测试：

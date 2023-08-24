@@ -1,4 +1,4 @@
-package org.example.bean;
+package org.example.test.bean;
 
 import lombok.Getter;
 import lombok.Setter;
